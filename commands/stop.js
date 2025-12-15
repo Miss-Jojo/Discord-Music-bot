@@ -2,20 +2,20 @@ const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("skip")
-    .setDescription("Skip the current song"),
+    .setName("stop")
+    .setDescription("Stop music and clear the queue"),
 
   async execute({ interaction, client }) {
     const queue = client.player.nodes.get(interaction.guildId);
 
-    if (!queue || !queue.isPlaying()) {
+    if (!queue) {
       return interaction.reply({
-        content: "❌ No song to skip.",
+        content: "❌ No music session found.",
         flags: 64,
       });
     }
 
-    queue.node.skip();
-    interaction.reply("⏭️ Skipped the song.");
+    queue.delete();
+    interaction.reply("🛑 Music stopped and queue cleared.");
   },
 };
